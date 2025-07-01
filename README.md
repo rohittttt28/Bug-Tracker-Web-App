@@ -1,91 +1,51 @@
-# Bug-Tracker-Web-App
-# Description
-A web-based bug/issue tracking application built with Python and Flask. Users can create, view, update, and delete bugs with assigned priorities, statuses, and assignees. It helps small teams track and manage software bugs efficiently.
+# Bug Tracker Web App
 
-# Features
-- Add, update, and delete bugs
-- Assign status (Open, In Progress, Resolved)
-- Set priority (High, Medium, Low)
-- Assign to specific users
-- View all bugs in a table layout
+A simple bug tracking application built with Python Flask.
 
-# Technologies
-- Python 3.x
-- Flask
-- SQLite (built-in)
-- HTML, CSS (for UI)
+## Quick Start with Docker
 
-# Getting Started
+```bash
+docker build -t bug-tracker .
+docker run -p 5000:5000 bug-tracker
+```
 
-# Create and activate a virtual environment
+The app will automatically:
+- Initialize the database
+- Add sample data (15 dummy issues)
+- Start the web server
+
+Then open: http://127.0.0.1:5000
+
+## Manual Setup
+
+### 1. Create Virtual Environment
 ```bash
-python -m venv .venv
+python -m venv venv
 ```
-# Windows
+
+### 2. Activate Virtual Environment
 ```bash
-.\.venv\Scripts\activate
+# On Windows:
+venv\Scripts\activate
+
+# On macOS/Linux:
+source venv/bin/activate
 ```
-# macOS/Linux
+
+### 3. Install Dependencies
 ```bash
-source .venv/bin/activate
+pip install -r requirements.txt
 ```
-Install dependencies
+
+### 4. Initialize Database and Add Sample Data
 ```bash
-pip install flask
+python -c "from app import init_db; init_db()"
+python add_dummy_data.py
 ```
-Run the app
+
+### 5. Run the Application
 ```bash
 python app.py
 ```
-Then open:
-http://127.0.0.1:5000
 
-Requirements
-```bash
-flask
-```
-SQLite will be auto-initialized (bug_tracker.db) on first run.
-
-## 📖 Usage Guide
-
-### Adding a New Issue
-1. Click the **"+ Add New Issue"** button
-2. Fill in the required fields:
-   - **Title**: Brief description of the issue
-   - **Description**: Detailed explanation (optional)
-   - **Priority**: Select High, Medium, or Low
-   - **Assignee**: Name of the person responsible
-3. Click **"Submit"** to create the issue
-
-### Managing Issues
-- **View All Issues**: All issues are displayed on the main page
-- **Filter by Priority**: Use the filter buttons to view specific priority levels
-- **Update Status**: Click status buttons to change issue progress
-- **Delete Issues**: Click delete button to remove resolved issues
-
-### Priority Levels
-- 🟡 **Medium**: Important issues that should be addressed soon
-- 🟢 **Low**: Minor issues that can be addressed later
-
-### Status Workflow
-1. **Open**: Newly created issues
-2. **In Progress**: Issues currently being worked on
-3. **Closed**: Resolved or completed issues
-
-## ️ Database Schema
-
-The application uses SQLite with the following table structure:
-
-```sql
-CREATE TABLE issues (
-    id INTEGER PRIMARY KEY,
-    title TEXT NOT NULL,
-    description TEXT,
-    status TEXT DEFAULT 'Open',
-    priority TEXT DEFAULT 'Medium',
-    assignee TEXT,
-    date TEXT
-);
-```
-
-## 📁 Project Structure
+Then open: http://127.0.0.1:5000
