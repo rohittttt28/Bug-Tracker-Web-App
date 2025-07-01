@@ -2,20 +2,6 @@
 
 A simple bug tracking application built with Python Flask.
 
-## Quick Start with Docker
-
-```bash
-docker build -t bug-tracker .
-docker run -p 5000:5000 bug-tracker
-```
-
-The app will automatically:
-- Initialize the database
-- Add sample data (15 dummy issues)
-- Start the web server
-
-Then open: http://127.0.0.1:5000
-
 ## Manual Setup
 
 ### 1. Create Virtual Environment
