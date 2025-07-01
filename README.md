@@ -45,3 +45,47 @@ Requirements
 flask
 ```
 SQLite will be auto-initialized (bug_tracker.db) on first run.
+
+## 📖 Usage Guide
+
+### Adding a New Issue
+1. Click the **"+ Add New Issue"** button
+2. Fill in the required fields:
+   - **Title**: Brief description of the issue
+   - **Description**: Detailed explanation (optional)
+   - **Priority**: Select High, Medium, or Low
+   - **Assignee**: Name of the person responsible
+3. Click **"Submit"** to create the issue
+
+### Managing Issues
+- **View All Issues**: All issues are displayed on the main page
+- **Filter by Priority**: Use the filter buttons to view specific priority levels
+- **Update Status**: Click status buttons to change issue progress
+- **Delete Issues**: Click delete button to remove resolved issues
+
+### Priority Levels
+- 🟡 **Medium**: Important issues that should be addressed soon
+- 🟢 **Low**: Minor issues that can be addressed later
+
+### Status Workflow
+1. **Open**: Newly created issues
+2. **In Progress**: Issues currently being worked on
+3. **Closed**: Resolved or completed issues
+
+## ️ Database Schema
+
+The application uses SQLite with the following table structure:
+
+```sql
+CREATE TABLE issues (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT,
+    status TEXT DEFAULT 'Open',
+    priority TEXT DEFAULT 'Medium',
+    assignee TEXT,
+    date TEXT
+);
+```
+
+## 📁 Project Structure

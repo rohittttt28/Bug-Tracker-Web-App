@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .add-button {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .add-button:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .filter-section {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .filter-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-label {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        
+        .priority-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .filter-btn.active {
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+        
+        .issues-container {
+            padding: 30px;
+        }
+        
+        .issue-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .issue-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .issue-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .issue-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .issue-id {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .issue-description {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .issue-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .meta-label {
+            font-weight: 600;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .meta-value {
+            color: #333;
+            font-size: 0.9rem;
+        }
+        
+        .priority-high {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        
+        .priority-medium {
+            color: #ffc107;
+            font-weight: 600;
+        }
+        
+        .priority-low {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .status-open {
+            background: #dc3545;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-in-progress {
+            background: #ffc107;
+            color: #333;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-closed {
+            background: #28a745;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .issue-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-progress {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .btn-progress:hover {
+            background: #e0a800;
+        }
+        
+        .btn-close {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-close:hover {
+            background: #218838;
+        }
+        
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background: #c82333;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .filter-section {
+                padding: 15px 20px;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .issues-container {
+                padding: 20px;
+            }
+            
+            .issue-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .issue-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐛 Bug Tracker</h1>
+            <p>Track and manage your project issues efficiently</p>
+            <a href="{{ url_for('add_issue') }}" class="add-button">+ Add New Issue</a>
+        </div>
+        
+        <div class="filter-section">
+            <div class="filter-container">
+                <span class="filter-label">Filter by Priority:</span>
+                <div class="priority-filter">
+                    <a href="{{ url_for('index') }}" class="filter-btn {% if not selected_priority %}active{% endif %}">All</a>
+                    <a href="{{ url_for('index', priority='High') }}" class="filter-btn {% if selected_priority == 'High' %}active{% endif %}">High</a>
+                    <a href="{{ url_for('index', priority='Medium') }}" class="filter-btn {% if selected_priority == 'Medium' %}active{% endif %}">Medium</a>
+                    <a href="{{ url_for('index', priority='Low') }}" class="filter-btn {% if selected_priority == 'Low' %}active{% endif %}">Low</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="issues-container">
+            {% if issues %}
+                {% for issue in issues %}
+                <div class="issue-card">
+                    <div class="issue-header">
+                        <div>
+                            <div class="issue-title">{{ issue[1] }}</div>
+                            <div class="issue-id">#{{ issue[0] }}</div>
+                        </div>
+                        <span class="status-{{ issue[3].lower().replace(' ', '-') }}">{{ issue[3] }}</span>
+                    </div>
+                    
+                    {% if issue[2] %}
+                    <div class="issue-description">{{ issue[2] }}</div>
+                    {% endif %}
+                    
+                    <div class="issue-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Priority:</span>
+                            <span class="priority-{{ issue[4].lower() }}">{{ issue[4] }}</span>
+                        </div>
+                        {% if issue[5] %}
+                        <div class="meta-item">
+                            <span class="meta-label">Assignee:</span>
+                            <span class="meta-value">{{ issue[5] }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="meta-item">
+                            <span class="meta-label">Date:</span>
+                            <span class="meta-value">{{ issue[6] }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="issue-actions">
+                        {% if issue[3] == 'Open' %}
+                        <a href="{{ url_for('update_status', id=issue[0], status='In Progress') }}" class="action-btn btn-progress">Mark In Progress</a>
+                        <a href="{{ url_for('update_status', id=issue[0], status='Closed') }}" class="action-btn btn-close">Close Issue</a>
+                        {% elif issue[3] == 'In Progress' %}
+                        <a href="{{ url_for('update_status', id=issue[0], status='Closed') }}" class="action-btn btn-close">Close Issue</a>
+                        <a href="{{ url_for('update_status', id=issue[0], status='Open') }}" class="action-btn btn-progress">Reopen</a>
+                        {% elif issue[3] == 'Closed' %}
+                        <a href="{{ url_for('update_status', id=issue[0], status='Open') }}" class="action-btn btn-progress">Reopen</a>
+                        {% endif %}
+                        <a href="{{ url_for('delete_issue', id=issue[0]) }}" class="action-btn btn-delete" onclick="return confirm('Are you sure you want to delete this issue?')">Delete</a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <h3>No issues found</h3>
+                    <p>{% if selected_priority %}No {{ selected_priority.lower() }} priority issues found.{% else %}Start by adding your first bug or feature request{% endif %}</p>
+                    <a href="{{ url_for('add_issue') }}" class="add-button">+ Add New Issue</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html> 
